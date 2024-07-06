@@ -8,23 +8,31 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { Routes } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RacesComponent } from './components/races/races.component';
+import { EShopComponent } from './components/e-shop/e-shop.component';
 
 const routes: Routes = [
     {path: '', component: HomeComponent },
     {path: 'login', component: LoginComponent },
+    {path: 'races', component: RacesComponent },
+    {path: 'e-shop', component: EShopComponent },
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    RacesComponent,
+    EShopComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
