@@ -7,11 +7,23 @@ import { Member } from '../models/member';
   providedIn: 'root'
 })
 export class MemberService {
-  private baseUrl = 'http://localhost:8080/member'; 
+  private baseUrl = 'http://localhost:8080/member'; // URL of your back-end API
 
   constructor(private http: HttpClient) { }
 
   getMembers(): Observable<Member[]> {
     return this.http.get<Member[]>(`${this.baseUrl}/all`);
+  }
+
+  addMember(member: Member): Observable<Member> {
+    return this.http.post<Member>(`${this.baseUrl}/add`, member);
+  }
+
+  updateMember(member: Member): Observable<Member> {
+    return this.http.put<Member>(`${this.baseUrl}/update`, member);
+  }
+
+  deleteMember(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
 }
