@@ -9,6 +9,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RacesComponent } from './components/races/races.component';
 import { EShopComponent } from './components/e-shop/e-shop.component';
 import { CommonModule } from '@angular/common';
+import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
     LoginComponent,
     HomeComponent,
     RacesComponent,
-    EShopComponent
+    EShopComponent,
+    AdminTabComponent
   ],
   imports: [
     BrowserModule,

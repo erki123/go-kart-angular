@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2 class="mb-3">Members List</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Phone</th>
+          <th>Image</th>
+          <th>Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>{{ member.id }}</td>
+          <td>{{ member.name }}</td>
+          <td>{{ member.email }}</td>
+          <td>{{ member.memberStatus }}</td>
+          <td>{{ member.phone }}</td>
+          <td><img [src]="member.imageUrl" alt="{{ member.name }}" width="50" height="50"></td>
+          <td>{{ member.memberCode }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
