@@ -17,6 +17,7 @@ export class AdminTabComponent implements OnInit {
   members: Member[] = [];
   newMember: Member = { id: 0, name: '', email: '', memberStatus: '', phone: '', imageUrl: '', memberCode: '' };
   selectedMember: Member | null = null;
+  isAddMemberFormVisible: boolean = false;
 
   constructor(private memberService: MemberService) { }
 
@@ -36,6 +37,7 @@ export class AdminTabComponent implements OnInit {
       data => {
         this.members.push(data);
         this.newMember = { id: 0, name: '', email: '', memberStatus: '', phone: '', imageUrl: '', memberCode: '' };
+        this.isAddMemberFormVisible = false;
       },
       error => console.log(error)
     );
@@ -59,22 +61,35 @@ export class AdminTabComponent implements OnInit {
   }
 
   deleteMember(id: number): void {
-    this.memberService.deleteMember(id).subscribe(
-      () => {
-        this.members = this.members.filter(member => member.id !== id);
-      },
-      error => {
-        console.log(error);
-        alert('Failed to delete member. Please try again.');
-      }
-    );
+    if (confirm('Are you sure you want to delete this member?')) {
+      this.memberService.deleteMember(id).subscribe(
+        () => {
+          this.members = this.members.filter(member => member.id !== id);
+        },
+        error => {
+          console.log(error);
+          alert('Failed to delete member. Please try again.');
+        }
+      );
+    }
   }
 
   selectMember(member: Member): void {
     this.selectedMember = { ...member };
+    this.isAddMemberFormVisible = false; // Hide add form when editing
   }
 
   clearSelection(): void {
     this.selectedMember = null;
   }
+
+  showAddMemberForm(): void {
+    this.isAddMemberFormVisible = true;
+    this.selectedMember = null; // Ensure no member is selected when adding a new member
+  }
+
+  hideAddMemberForm(): void {
+    this.isAddMemberFormVisible = false;
+  }
+
 }

@@ -1,83 +1,87 @@
 <div class="container mt-5">
-    <h2 class="mb-3">Members List</h2>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Phone</th>
-          <th>Image</th>
-          <th>Code</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let member of members">
-          <td>{{ member.id }}</td>
-          <td>{{ member.name }}</td>
-          <td>{{ member.email }}</td>
-          <td>{{ member.memberStatus }}</td>
-          <td>{{ member.phone }}</td>
-          <td><img [src]="member.imageUrl" alt="{{ member.name }}" width="50" height="50"></td>
-          <td>{{ member.memberCode }}</td>
-          <td>
-            <button class="btn btn-primary" (click)="selectMember(member)">Edit</button>
-            <button class="btn btn-danger" (click)="deleteMember(member.id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <h3 *ngIf="selectedMember">Edit Member</h3>
-    <h3 *ngIf="!selectedMember">Add New Member</h3>
-    <form *ngIf="selectedMember" (ngSubmit)="updateMember()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" class="form-control" [(ngModel)]="selectedMember.name" name="name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" [(ngModel)]="selectedMember.email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" id="status" class="form-control" [(ngModel)]="selectedMember.memberStatus" name="status" required>
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" class="form-control" [(ngModel)]="selectedMember.phone" name="phone" required>
-      </div>
-      <div class="form-group">
-        <label for="imageUrl">Image URL</label>
-        <input type="text" id="imageUrl" class="form-control" [(ngModel)]="selectedMember.imageUrl" name="imageUrl" required>
-      </div>
-      <button type="submit" class="btn btn-success">Update</button>
-      <button type="button" class="btn btn-secondary" (click)="clearSelection()">Cancel</button>
-    </form>
-    <form *ngIf="!selectedMember" (ngSubmit)="addMember()">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" class="form-control" [(ngModel)]="newMember.name" name="name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" class="form-control" [(ngModel)]="newMember.email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" id="status" class="form-control" [(ngModel)]="newMember.memberStatus" name="status" required>
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" class="form-control" [(ngModel)]="newMember.phone" name="phone" required>
-      </div>
-      <div class="form-group">
-        <label for="imageUrl">Image URL</label>
-        <input type="text" id="imageUrl" class="form-control" [(ngModel)]="newMember.imageUrl" name="imageUrl" required>
-      </div>
-      <button type="submit" class="btn btn-success">Add</button>
-      <button type="button" class="btn btn-secondary" (click)="clearSelection()">Cancel</button>
-    </form>
-  </div>
+  <h2 class="mb-3">Members List</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Phone</th>
+        <th>Image</th>
+        <th>Code</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of members">
+        <td>{{ member.id }}</td>
+        <td>{{ member.name }}</td>
+        <td>{{ member.email }}</td>
+        <td>{{ member.memberStatus }}</td>
+        <td>{{ member.phone }}</td>
+        <td><img [src]="member.imageUrl" alt="{{ member.name }}" width="50" height="50"></td>
+        <td>{{ member.memberCode }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="selectMember(member)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteMember(member.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button *ngIf="!isAddMemberFormVisible && !selectedMember" class="btn btn-primary mb-3" (click)="showAddMemberForm()">Add New Member</button>
+
+  <h3 *ngIf="selectedMember">Edit Member</h3>
+  <h3 *ngIf="!selectedMember && isAddMemberFormVisible">Add New Member</h3>
+
+  <form *ngIf="isAddMemberFormVisible" (ngSubmit)="addMember()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="newMember.name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="newMember.email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <input type="text" id="status" class="form-control" [(ngModel)]="newMember.memberStatus" name="status" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" class="form-control" [(ngModel)]="newMember.phone" name="phone" required>
+    </div>
+    <div class="form-group">
+      <label for="imageUrl">Image URL</label>
+      <input type="text" id="imageUrl" class="form-control" [(ngModel)]="newMember.imageUrl" name="imageUrl" required>
+    </div>
+    <button type="submit" class="btn btn-success">Add</button>
+    <button type="button" class="btn btn-secondary" (click)="hideAddMemberForm()">Cancel</button>
+  </form>
+
+  <form *ngIf="selectedMember" (ngSubmit)="updateMember()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" id="name" class="form-control" [(ngModel)]="selectedMember.name" name="name" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control" [(ngModel)]="selectedMember.email" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <input type="text" id="status" class="form-control" [(ngModel)]="selectedMember.memberStatus" name="status" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="text" id="phone" class="form-control" [(ngModel)]="selectedMember.phone" name="phone" required>
+    </div>
+    <div class="form-group">
+      <label for="imageUrl">Image URL</label>
+      <input type="text" id="imageUrl" class="form-control" [(ngModel)]="selectedMember.imageUrl" name="imageUrl" required>
+    </div>
+    <button type="submit" class="btn btn-success">Update</button>
+    <button type="button" class="btn btn-secondary" (click)="clearSelection()">Cancel</button>
+  </form>
+</div>
