@@ -3,12 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
-import { RacesComponent } from './components/races/races.component';
+import { RaceComponent } from './components/race/race.component';
 import { EShopComponent } from './components/e-shop/e-shop.component';
-import { CommonModule } from '@angular/common';
 import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
 
 @NgModule({
@@ -16,7 +15,7 @@ import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
     AppComponent,
     LoginComponent,
     HomeComponent,
-    RacesComponent,
+    RaceComponent,
     EShopComponent,
     AdminTabComponent
   ],
@@ -25,7 +24,7 @@ import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    CommonModule
+    ReactiveFormsModule
   ],
   bootstrap: [AppComponent]
 })
