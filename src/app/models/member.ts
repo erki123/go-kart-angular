@@ -1,9 +1,8 @@
 export interface Member {
     id: number;
-    name: string;
+    username: string;
+    password: string;
     email: string;
-    memberStatus: string;
+    memberRole: string;
     phone: string;
-    imageUrl: string;
-    memberCode: string;
   }

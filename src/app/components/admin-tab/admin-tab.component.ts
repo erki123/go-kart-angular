@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class AdminTabComponent implements OnInit {
   members: Member[] = [];
-  newMember: Member = { id: 0, name: '', email: '', memberStatus: '', phone: '', imageUrl: '', memberCode: '' };
+  newMember: Member = { id: 0, username: '', password: '', email: '', memberRole: '', phone: '' };
   selectedMember: Member | null = null;
   isAddMemberFormVisible: boolean = false;
 
@@ -36,7 +36,7 @@ export class AdminTabComponent implements OnInit {
     this.memberService.addMember(this.newMember).subscribe(
       data => {
         this.members.push(data);
-        this.newMember = { id: 0, name: '', email: '', memberStatus: '', phone: '', imageUrl: '', memberCode: '' };
+        this.newMember = { id: 0, username: '', password: '', email: '', memberRole: '', phone: '' };
         this.isAddMemberFormVisible = false;
       },
       error => console.log(error)
