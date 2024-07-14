@@ -1,7 +1,7 @@
 export interface Race {
-    id: number;
-    trackID: number;
-    memberID: number;
-    year: number;
-    points: number;
-  }
+  id: number;
+  name: string;
+  location: string;
+  time: string; 
+  description: string;
+}

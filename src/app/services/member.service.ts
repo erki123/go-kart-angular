@@ -7,7 +7,7 @@ import { Member } from '../models/member';
   providedIn: 'root'
 })
 export class MemberService {
-  private baseUrl = 'http://localhost:8080/member'; // URL of your back-end API
+  private baseUrl = 'http://localhost:8080/member';
 
   constructor(private http: HttpClient) { }
 

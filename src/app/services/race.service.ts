@@ -7,23 +7,23 @@ import { Race } from '../models/race';
   providedIn: 'root'
 })
 export class RaceService {
-  private apiUrl = 'http://localhost:8080/race';
+  private baseUrl = 'http://localhost:8080/race';
 
   constructor(private http: HttpClient) { }
 
   getRaces(): Observable<Race[]> {
-    return this.http.get<Race[]>(`${this.apiUrl}/all`);
+    return this.http.get<Race[]>(`${this.baseUrl}/all`);
   }
 
   addRace(race: Race): Observable<Race> {
-    return this.http.post<Race>(`${this.apiUrl}/add`, race);
+    return this.http.post<Race>(`${this.baseUrl}/add`, race);
   }
 
   updateRace(race: Race): Observable<Race> {
-    return this.http.put<Race>(`${this.apiUrl}/update`, race);
+    return this.http.put<Race>(`${this.baseUrl}/update`, race);
   }
 
   deleteRace(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
   }
 }

@@ -9,7 +9,7 @@
         <th>Password</th>
         <th>Role</th>
         <th>Phone</th>
-        <th>Actions</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -21,8 +21,10 @@
         <td>{{ member.memberRole }}</td>
         <td>{{ member.phone }}</td>
         <td>
-          <button class="btn btn-primary" (click)="selectMember(member)">Edit</button>
+          <div class="d-flex justify-content-end">
+          <button class="btn btn-primary me-2" (click)="selectMember(member)">Edit</button>
           <button class="btn btn-danger" (click)="deleteMember(member.id)">Delete</button>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -48,7 +50,11 @@
     </div>
     <div class="form-group">
       <label for="memberRole">Role</label>
-      <input type="text" id="memberRole" class="form-control" [(ngModel)]="newMember.memberRole" name="memberRole" required>
+      <select id="memberRole" class="form-control" [(ngModel)]="newMember.memberRole" name="memberRole" required>
+        <option value="guest">Guest</option>
+        <option value="member">Member</option>
+        <option value="admin">Admin</option>
+      </select>
     </div>
     <div class="form-group">
       <label for="phone">Phone</label>
@@ -73,7 +79,11 @@
     </div>
     <div class="form-group">
       <label for="memberRole">Role</label>
-      <input type="text" id="memberRole" class="form-control" [(ngModel)]="selectedMember.memberRole" name="memberRole" required>
+      <select id="memberRole" class="form-control" [(ngModel)]="selectedMember.memberRole" name="memberRole" required>
+        <option value="guest">Guest</option>
+        <option value="member">Member</option>
+        <option value="admin">Admin</option>
+      </select>
     </div>
     <div class="form-group">
       <label for="phone">Phone</label>
