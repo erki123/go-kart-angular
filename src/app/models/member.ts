@@ -5,4 +5,5 @@ export interface Member {
     email: string;
     memberRole: string;
     phone: string;
+    participantsToRaces: string[];
   }

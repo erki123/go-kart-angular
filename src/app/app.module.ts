@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { RaceComponent } from './components/race/race.component';
-import { EShopComponent } from './components/e-shop/e-shop.component';
 import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { AdminTabComponent } from './components/admin-tab/admin-tab.component';
     LoginComponent,
     HomeComponent,
     RaceComponent,
-    EShopComponent,
     AdminTabComponent
   ],
   imports: [
