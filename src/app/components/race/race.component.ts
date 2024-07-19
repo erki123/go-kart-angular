@@ -8,6 +8,11 @@ import { Race } from '../../models/race';
 import { Track } from '../../models/track';
 import { Member } from '../../models/member';
 import { FormsModule } from '@angular/forms';
+import { RegistrationService } from '../../services/registration.servive';
+import { Registration } from '../../models/registration';
+
+import { Modal } from 'bootstrap';
+
 
 @Component({
   selector: 'app-race',
@@ -15,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './race.component.html',
   styleUrls: ['./race.component.css'],
-  providers: [RaceService, TrackService, MemberService],
+  providers: [RaceService, TrackService, MemberService, RegistrationService],
 })
 export class RaceComponent implements OnInit {
   races: Race[] = [];
@@ -29,7 +34,7 @@ export class RaceComponent implements OnInit {
   isAddTrackFormVisible: boolean = false;
 
   members: Member[] = [];
-  selectedMember: Member | null = null;
+  selectedMemberId: number | null = null;
 
   locations: string[] = [
     'Aravete', 'Audru', 'Haapsalu', 'Laagri', 'Laitse', 'Lange',
@@ -39,7 +44,8 @@ export class RaceComponent implements OnInit {
   constructor(
     private raceService: RaceService,
     private trackService: TrackService,
-    private memberService: MemberService
+    private memberService: MemberService,
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {
@@ -68,15 +74,16 @@ export class RaceComponent implements OnInit {
 
   updateRace(): void {
     if (this.selectedRace) {
-      console.log('Updating race:', this.selectedRace);
+      console.log('Updating race:', this.selectedRace); // Debug log
       this.raceService.updateRace(this.selectedRace).subscribe(
         (data) => {
-          console.log('Updated race from backend:', data);
+          console.log('Updated race from backend:', data); // Debug log
           const index = this.races.findIndex((race) => race.id === data.id);
           if (index !== -1) {
             this.races[index] = data;
           }
           this.selectedRace = null;
+          this.isAddRaceFormVisible = false;
         },
         (error) => console.log(error)
       );
@@ -99,11 +106,12 @@ export class RaceComponent implements OnInit {
 
   selectRace(race: Race): void {
     this.selectedRace = { ...race };
-    this.isAddRaceFormVisible = false;
+    this.isAddRaceFormVisible = true; // Show the form when editing
   }
 
   clearRaceSelection(): void {
     this.selectedRace = null;
+    this.isAddRaceFormVisible = false; // Hide the form when clearing selection
   }
 
   showAddRaceForm(): void {
@@ -189,5 +197,57 @@ export class RaceComponent implements OnInit {
     );
   }
 
+   // Registration-related methods
+     openRegisterModal(race: Race): void {
+    this.selectedRace = race;
+    const modalElement = document.getElementById('registrationModal');
+    if (modalElement) {
+      const modal = new Modal(modalElement);
+      modal.show();
+    }
+  }
 
+  registerMemberToRace(): void {
+    if (this.selectedMemberId && this.selectedRace) {
+      const selectedMember = this.members.find(member => member.id === this.selectedMemberId);
+      if (selectedMember) {
+        const registration: Registration = {
+          id: 0,
+          member: selectedMember,
+          race: this.selectedRace
+        };
+  
+        this.registrationService.addRegistration(registration).subscribe(
+          data => {
+            alert('Member registered to race successfully.');
+            this.selectedMemberId = null;
+            const modalElement = document.getElementById('registrationModal');
+            if (modalElement) {
+              const modal = Modal.getInstance(modalElement);
+              if (modal) {
+                modal.hide();
+              }
+            }
+  
+            // Ensure selectedRace is not null
+            if (this.selectedRace) {
+              // Update the participantsToRaces field in the frontend
+              selectedMember.participantsToRaces!.push(`${this.selectedRace.name!} (${selectedMember.id})`);
+              const index = this.members.findIndex(member => member.id === selectedMember.id);
+              if (index !== -1) {
+                this.members[index] = selectedMember;
+              }
+            }
+          },
+          error => console.log(error)
+        );
+      }
+    } else {
+      alert('Please select a member and a race.');
+    }
+  }
+  
+  
+  
+  
 }
