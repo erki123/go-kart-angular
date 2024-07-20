@@ -27,24 +27,24 @@
       <div *ngIf="isAddRaceFormVisible || selectedRace">
         <h3 *ngIf="selectedRace">Edit Race</h3>
         <h3 *ngIf="!selectedRace">Add New Race</h3>
-        <form (ngSubmit)="selectedRace ? updateRace() : addRace()">
+        <form [formGroup]="raceForm" (ngSubmit)="selectedRace ? updateRace() : addRace()">
           <div class="form-group">
             <label for="name">Race Name</label>
-            <input type="text" id="name" class="form-control" [(ngModel)]="selectedRace ? selectedRace.name : newRace.name" name="name" required>
+            <input type="text" id="name" class="form-control" formControlName="name" required>
           </div>
           <div class="form-group">
             <label for="location">Track</label>
-            <select id="location" class="form-control" [(ngModel)]="selectedRace ? selectedRace.location : newRace.location" name="location" required>
+            <select id="location" class="form-control" formControlName="location" required>
               <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
             </select>
           </div>
           <div class="form-group">
             <label for="time">Time</label>
-            <input type="text" id="time" class="form-control" [(ngModel)]="selectedRace ? selectedRace.time : newRace.time" name="time" required>
+            <input type="text" id="time" class="form-control" formControlName="time" required>
           </div>
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea id="description" class="form-control" [(ngModel)]="selectedRace ? selectedRace.description : newRace.description" name="description" required></textarea>
+            <textarea id="description" class="form-control" formControlName="description" required></textarea>
           </div>
           <button type="submit" class="btn btn-success">Save</button>
           <button type="button" class="btn btn-secondary" (click)="clearRaceSelection()">Cancel</button>
@@ -80,14 +80,14 @@
       <div *ngIf="isAddTrackFormVisible || selectedTrack">
         <h3 *ngIf="selectedTrack">Edit Track</h3>
         <h3 *ngIf="!selectedTrack">Add New Track</h3>
-        <form (ngSubmit)="selectedTrack ? updateTrack() : addTrack()">
+        <form [formGroup]="trackForm" (ngSubmit)="selectedTrack ? updateTrack() : addTrack()">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" id="name" class="form-control" [(ngModel)]="selectedTrack ? selectedTrack.name : newTrack.name" name="name" required>
+            <input type="text" id="name" class="form-control" formControlName="name" required>
           </div>
           <div class="form-group">
             <label for="trackLength">Length (m)</label>
-            <input type="number" id="trackLength" class="form-control" [(ngModel)]="selectedTrack ? selectedTrack.trackLength : newTrack.trackLength" name="trackLength" required>
+            <input type="number" id="trackLength" class="form-control" formControlName="trackLength" required>
           </div>
           <button type="submit" class="btn btn-success">Save</button>
           <button type="button" class="btn btn-secondary" (click)="clearTrackSelection()">Cancel</button>
@@ -96,7 +96,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Register to Race Modal -->
 <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">

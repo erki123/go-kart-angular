@@ -1,0 +1,28 @@
+.btn-primary {
+    font-size: 1.5rem;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .logo {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 30%;
+  }
+  
+  .text-content {
+    text-align: left;
+  }
+  
+  .image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .image-container img {
+    max-width: 100%;
+  }

@@ -7,28 +7,28 @@ import { MemberService } from '../../services/member.service';
 import { Race } from '../../models/race';
 import { Track } from '../../models/track';
 import { Member } from '../../models/member';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegistrationService } from '../../services/registration.servive';
 import { Registration } from '../../models/registration';
-
 import { Modal } from 'bootstrap';
-
 
 @Component({
   selector: 'app-race',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule],
   templateUrl: './race.component.html',
   styleUrls: ['./race.component.css'],
   providers: [RaceService, TrackService, MemberService, RegistrationService],
 })
 export class RaceComponent implements OnInit {
   races: Race[] = [];
+  raceForm: FormGroup;
   newRace: Race = { id: 0, name: '', location: '', time: '', description: '' };
   selectedRace: Race | null = null;
   isAddRaceFormVisible: boolean = false;
 
   tracks: Track[] = [];
+  trackForm: FormGroup;
   newTrack: Track = { id: 0, name: '', trackLength: 0 };
   selectedTrack: Track | null = null;
   isAddTrackFormVisible: boolean = false;
@@ -42,11 +42,26 @@ export class RaceComponent implements OnInit {
   ];
 
   constructor(
+    private fb: FormBuilder,
     private raceService: RaceService,
     private trackService: TrackService,
     private memberService: MemberService,
     private registrationService: RegistrationService
-  ) {}
+  ) {
+    this.raceForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      location: ['', Validators.required],
+      time: ['', Validators.required],
+      description: ['', Validators.required]
+    });
+
+    this.trackForm = this.fb.group({
+      id: [0],
+      name: ['', Validators.required],
+      trackLength: [0, Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     this.loadRaces();
@@ -62,10 +77,10 @@ export class RaceComponent implements OnInit {
   }
 
   addRace(): void {
-    this.raceService.addRace(this.newRace).subscribe(
+    this.raceService.addRace(this.raceForm.value).subscribe(
       (data) => {
         this.races.push(data);
-        this.newRace = { id: 0, name: '', location: '', time: '', description: '' };
+        this.raceForm.reset({ id: 0, name: '', location: '', time: '', description: '' });
         this.isAddRaceFormVisible = false;
       },
       (error) => console.log(error)
@@ -74,10 +89,11 @@ export class RaceComponent implements OnInit {
 
   updateRace(): void {
     if (this.selectedRace) {
-      console.log('Updating race:', this.selectedRace); // Debug log
-      this.raceService.updateRace(this.selectedRace).subscribe(
+      const updatedRace = { ...this.selectedRace, ...this.raceForm.value };
+      console.log('Updating race:', updatedRace); // Debug log before updating
+      this.raceService.updateRace(updatedRace).subscribe(
         (data) => {
-          console.log('Updated race from backend:', data); // Debug log
+          console.log('Updated race from backend:', data); // Debug log after updating
           const index = this.races.findIndex((race) => race.id === data.id);
           if (index !== -1) {
             this.races[index] = data;
@@ -85,8 +101,12 @@ export class RaceComponent implements OnInit {
           this.selectedRace = null;
           this.isAddRaceFormVisible = false;
         },
-        (error) => console.log(error)
+        (error) => {
+          console.log('Error updating race:', error);
+        }
       );
+    } else {
+      console.log('No race selected for updating.'); // Debug log for no selected race
     }
   }
 
@@ -106,17 +126,19 @@ export class RaceComponent implements OnInit {
 
   selectRace(race: Race): void {
     this.selectedRace = { ...race };
+    this.raceForm.patchValue(race);
     this.isAddRaceFormVisible = true; // Show the form when editing
   }
 
   clearRaceSelection(): void {
     this.selectedRace = null;
+    this.raceForm.reset({ id: 0, name: '', location: '', time: '', description: '' });
     this.isAddRaceFormVisible = false; // Hide the form when clearing selection
   }
 
   showAddRaceForm(): void {
     this.isAddRaceFormVisible = true;
-    this.selectedRace = null;
+    this.clearRaceSelection();
   }
 
   hideAddRaceForm(): void {
@@ -131,10 +153,10 @@ export class RaceComponent implements OnInit {
   }
 
   addTrack(): void {
-    this.trackService.addTrack(this.newTrack).subscribe(
+    this.trackService.addTrack(this.trackForm.value).subscribe(
       (data) => {
         this.tracks.push(data);
-        this.newTrack = { id: 0, name: '', trackLength: 0 };
+        this.trackForm.reset({ id: 0, name: '', trackLength: 0 });
         this.isAddTrackFormVisible = false;
       },
       (error) => console.log(error)
@@ -143,8 +165,9 @@ export class RaceComponent implements OnInit {
 
   updateTrack(): void {
     if (this.selectedTrack) {
-      console.log('Updating track:', this.selectedTrack);
-      this.trackService.updateTrack(this.selectedTrack).subscribe(
+      const updatedTrack = { ...this.selectedTrack, ...this.trackForm.value };
+      console.log('Updating track:', updatedTrack);
+      this.trackService.updateTrack(updatedTrack).subscribe(
         (data) => {
           console.log('Updated track from backend:', data);
           const index = this.tracks.findIndex((track) => track.id === data.id);
@@ -174,16 +197,18 @@ export class RaceComponent implements OnInit {
 
   selectTrack(track: Track): void {
     this.selectedTrack = { ...track };
+    this.trackForm.patchValue(track);
     this.isAddTrackFormVisible = false;
   }
 
   clearTrackSelection(): void {
     this.selectedTrack = null;
+    this.trackForm.reset({ id: 0, name: '', trackLength: 0 });
   }
 
   showAddTrackForm(): void {
     this.isAddTrackFormVisible = true;
-    this.selectedTrack = null;
+    this.clearTrackSelection();
   }
 
   hideAddTrackForm(): void {
@@ -197,8 +222,8 @@ export class RaceComponent implements OnInit {
     );
   }
 
-   // Registration-related methods
-     openRegisterModal(race: Race): void {
+  // Registration-related methods
+  openRegisterModal(race: Race): void {
     this.selectedRace = race;
     const modalElement = document.getElementById('registrationModal');
     if (modalElement) {
@@ -216,7 +241,7 @@ export class RaceComponent implements OnInit {
           member: selectedMember,
           race: this.selectedRace
         };
-  
+
         this.registrationService.addRegistration(registration).subscribe(
           data => {
             alert('Member registered to race successfully.');
@@ -228,7 +253,7 @@ export class RaceComponent implements OnInit {
                 modal.hide();
               }
             }
-  
+
             // Ensure selectedRace is not null
             if (this.selectedRace) {
               // Update the participantsToRaces field in the frontend
@@ -246,8 +271,4 @@ export class RaceComponent implements OnInit {
       alert('Please select a member and a race.');
     }
   }
-  
-  
-  
-  
 }
